@@ -867,7 +867,272 @@ button {
   font-size: 12px;
 }
 
+/* =========================================================
+   BUSINESS FOOTER
+   ========================================================= */
 
+.site-footer {
+    position: relative;
+
+    padding:
+        70px
+        8%
+        30px;
+
+    background: #08060D;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.footer-container {
+    width: 100%;
+
+    max-width: 1160px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        2fr
+        1fr
+        1fr
+        1.4fr;
+
+    gap: 55px;
+}
+
+
+.footer-brand {
+    max-width: 330px;
+}
+
+
+.footer-logo {
+    display: block;
+
+    width: auto;
+
+    height: 55px;
+
+    margin-bottom: 20px;
+
+    object-fit: contain;
+}
+
+
+.footer-description {
+    margin-bottom: 17px;
+
+    color: #929AA5;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+.footer-tagline {
+    color: var(--brand-light);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+}
+
+
+.footer-column {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 11px;
+}
+
+
+.footer-column h3 {
+    margin-bottom: 7px;
+
+    color: #F0F2F5;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.footer-column a {
+    color: #929AA5;
+
+    font-size: 12px;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.footer-column a:hover {
+    color: var(--white);
+}
+
+
+.footer-contact p {
+    color: #929AA5;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+.footer-column .footer-email {
+    color: #D4D8DF;
+
+    font-weight: 500;
+}
+
+
+.footer-column .footer-demo-link {
+    margin-top: 4px;
+
+    color: var(--brand-light);
+
+    font-weight: 600;
+}
+
+
+.footer-column .footer-demo-link:hover {
+    color: #DDD6FE;
+}
+
+
+.footer-bottom {
+    width: 100%;
+
+    max-width: 1160px;
+
+    margin:
+        55px
+        auto
+        0;
+
+    padding-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.footer-bottom p,
+.footer-legal a {
+    color: #6F7680;
+
+    font-size: 11px;
+}
+
+
+.footer-legal {
+    display: flex;
+
+    gap: 22px;
+}
+
+
+.footer-legal a {
+    transition:
+        color 0.2s ease;
+}
+
+
+.footer-legal a:hover {
+    color: #C8CDD4;
+}
+
+
+
+/* =========================================================
+   FOOTER TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .footer-container {
+        grid-template-columns:
+            2fr
+            1fr
+            1fr;
+
+        gap: 45px;
+    }
+
+
+    .footer-contact {
+        grid-column:
+            1 / -1;
+
+        padding-top: 15px;
+    }
+
+}
+
+
+
+/* =========================================================
+   FOOTER MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .site-footer {
+        padding:
+            55px
+            25px
+            25px;
+    }
+
+
+    .footer-container {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+
+    .footer-contact {
+        grid-column: auto;
+
+        padding-top: 0;
+    }
+
+
+    .footer-brand {
+        max-width: 100%;
+    }
+
+
+    .footer-bottom {
+        margin-top: 45px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+}
 
 /* =========================================================
    PHONE

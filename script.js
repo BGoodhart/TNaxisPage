@@ -7,17 +7,19 @@
    PAGE ENTRANCE
    --------------------------------------------------------- */
 
-document.body.classList.add('page-entering');
+document.body.classList.add("page-entering");
+
 
 requestAnimationFrame(() => {
 
     requestAnimationFrame(() => {
 
-        document.body.classList.remove('page-entering');
+        document.body.classList.remove("page-entering");
 
     });
 
 });
+
 
 
 /* ---------------------------------------------------------
@@ -28,23 +30,50 @@ const pageLinks = document.querySelectorAll(
     'a[href$=".html"]'
 );
 
+
 pageLinks.forEach(link => {
 
-    link.addEventListener('click', event => {
+    link.addEventListener("click", event => {
 
-        const destination = link.getAttribute('href');
+        const destination =
+            link.getAttribute("href");
 
-        if (link.target === '_blank') {
+
+        /*
+         * Do not interfere with links that open
+         * in another tab.
+         */
+
+        if (link.target === "_blank") {
             return;
         }
 
+
+        /*
+         * Prevent the normal instant page change.
+         */
+
         event.preventDefault();
 
-        document.body.classList.add('page-leaving');
+
+        /*
+         * Start page-content transition.
+         * Navbar remains unchanged.
+         */
+
+        document.body.classList.add(
+            "page-leaving"
+        );
+
+
+        /*
+         * Navigate after animation finishes.
+         */
 
         setTimeout(() => {
 
-            window.location.href = destination;
+            window.location.href =
+                destination;
 
         }, 280);
 
@@ -53,31 +82,63 @@ pageLinks.forEach(link => {
 });
 
 
+
 /* ---------------------------------------------------------
    SECTION FADE-IN ANIMATION
    --------------------------------------------------------- */
 
 const sections = document.querySelectorAll(
-    '.section, .cta'
+    ".section, .cta"
 );
 
-const observer = new IntersectionObserver(entries => {
 
-    entries.forEach(entry => {
+const observer = new IntersectionObserver(
 
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-        }
+    entries => {
 
-    });
+        entries.forEach(entry => {
 
-});
+            if (entry.isIntersecting) {
+
+                entry.target.classList.add(
+                    "show"
+                );
+
+            }
+
+        });
+
+    },
+
+    {
+        threshold: 0.08
+    }
+
+);
+
 
 
 sections.forEach(section => {
 
-    section.classList.add('hidden');
+    section.classList.add("hidden");
 
     observer.observe(section);
 
 });
+
+
+
+/* ---------------------------------------------------------
+   AUTOMATIC COPYRIGHT YEAR
+   --------------------------------------------------------- */
+
+const currentYear =
+    document.getElementById("current-year");
+
+
+if (currentYear) {
+
+    currentYear.textContent =
+        new Date().getFullYear();
+
+}
