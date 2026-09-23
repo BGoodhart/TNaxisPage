@@ -1014,7 +1014,18 @@
   }
 
 }
+/* =========================================================
+   FIX WHITE OVERSCROLL / PAGE BACKGROUND
+   ========================================================= */
 
+html {
+    background-color: #0A0810;
+}
+
+body.booking-page {
+    background-color: #0A0810;
+    min-height: 100vh;
+}
 
 /* =========================================================
    REDUCED MOTION

@@ -1872,3 +1872,12 @@ body.page-entering .cta {
     }
 
 }
+/* =========================================================
+   GLOBAL PAGE BACKGROUND
+   Prevents white flash during overscroll
+   ========================================================= */
+
+html,
+body {
+    background-color: #0A0810;
+}
