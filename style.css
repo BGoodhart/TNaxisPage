@@ -1525,3 +1525,61 @@ button {
   }
 
 }
+/* =========================================================
+   PAGE CONTENT TRANSITION
+   Navbar stays unchanged
+   ========================================================= */
+
+main,
+.hero,
+.section,
+.cta {
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+}
+
+
+/* Leaving page */
+body.page-leaving main,
+body.page-leaving .hero,
+body.page-leaving .section,
+body.page-leaving .cta {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+
+
+/* Entering page */
+body.page-entering main,
+body.page-entering .hero,
+body.page-entering .section,
+body.page-entering .cta {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    main,
+    .hero,
+    .section,
+    .cta {
+        transition: none;
+    }
+
+    body.page-leaving main,
+    body.page-leaving .hero,
+    body.page-leaving .section,
+    body.page-leaving .cta,
+    body.page-entering main,
+    body.page-entering .hero,
+    body.page-entering .section,
+    body.page-entering .cta {
+        opacity: 1;
+        transform: none;
+    }
+
+}
