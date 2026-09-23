@@ -4,6 +4,56 @@
 
 
 /* ---------------------------------------------------------
+   LOAD SHARED FOOTER
+   --------------------------------------------------------- */
+
+const footerPlaceholder =
+    document.getElementById("footer-placeholder");
+
+if (footerPlaceholder) {
+
+    fetch("footer.html")
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Could not load footer.");
+            }
+
+            return response.text();
+
+        })
+        .then(html => {
+
+            // Insert footer into page
+            footerPlaceholder.innerHTML = html;
+
+
+            // Automatically update copyright year
+            const currentYear =
+                document.getElementById("current-year");
+
+            if (currentYear) {
+
+                currentYear.textContent =
+                    new Date().getFullYear();
+
+            }
+
+        })
+        .catch(error => {
+
+            console.error(
+                "Footer loading error:",
+                error
+            );
+
+        });
+
+}
+
+
+
+/* ---------------------------------------------------------
    PAGE ENTRANCE
    --------------------------------------------------------- */
 
@@ -14,7 +64,9 @@ requestAnimationFrame(() => {
 
     requestAnimationFrame(() => {
 
-        document.body.classList.remove("page-entering");
+        document.body.classList.remove(
+            "page-entering"
+        );
 
     });
 
@@ -26,58 +78,61 @@ requestAnimationFrame(() => {
    PAGE LINK TRANSITIONS
    --------------------------------------------------------- */
 
-const pageLinks = document.querySelectorAll(
-    'a[href$=".html"]'
-);
+const pageLinks =
+    document.querySelectorAll(
+        'a[href$=".html"]'
+    );
 
 
 pageLinks.forEach(link => {
 
-    link.addEventListener("click", event => {
+    link.addEventListener(
+        "click",
+        event => {
 
-        const destination =
-            link.getAttribute("href");
+            const destination =
+                link.getAttribute("href");
 
 
-        /*
-         * Do not interfere with links that open
-         * in another tab.
-         */
+            /*
+             * Ignore links opening in another tab
+             */
 
-        if (link.target === "_blank") {
-            return;
+            if (link.target === "_blank") {
+                return;
+            }
+
+
+            /*
+             * Prevent instant navigation
+             */
+
+            event.preventDefault();
+
+
+            /*
+             * Start page transition.
+             * Navbar remains unchanged.
+             */
+
+            document.body.classList.add(
+                "page-leaving"
+            );
+
+
+            /*
+             * Navigate after transition finishes
+             */
+
+            setTimeout(() => {
+
+                window.location.href =
+                    destination;
+
+            }, 280);
+
         }
-
-
-        /*
-         * Prevent the normal instant page change.
-         */
-
-        event.preventDefault();
-
-
-        /*
-         * Start page-content transition.
-         * Navbar remains unchanged.
-         */
-
-        document.body.classList.add(
-            "page-leaving"
-        );
-
-
-        /*
-         * Navigate after animation finishes.
-         */
-
-        setTimeout(() => {
-
-            window.location.href =
-                destination;
-
-        }, 280);
-
-    });
+    );
 
 });
 
@@ -87,58 +142,56 @@ pageLinks.forEach(link => {
    SECTION FADE-IN ANIMATION
    --------------------------------------------------------- */
 
-const sections = document.querySelectorAll(
-    ".section, .cta"
-);
+const sections =
+    document.querySelectorAll(
+        ".section, .cta"
+    );
 
 
-const observer = new IntersectionObserver(
+const observer =
+    new IntersectionObserver(
 
-    entries => {
+        entries => {
 
-        entries.forEach(entry => {
+            entries.forEach(entry => {
 
-            if (entry.isIntersecting) {
+                if (entry.isIntersecting) {
 
-                entry.target.classList.add(
-                    "show"
-                );
+                    entry.target.classList.add(
+                        "show"
+                    );
 
-            }
+                    /*
+                     * Stop observing once visible.
+                     * Prevents unnecessary work.
+                     */
 
-        });
+                    observer.unobserve(
+                        entry.target
+                    );
 
-    },
+                }
 
-    {
-        threshold: 0.08
-    }
+            });
 
-);
+        },
+
+        {
+            threshold: 0.08
+        }
+
+    );
 
 
 
 sections.forEach(section => {
 
-    section.classList.add("hidden");
+    section.classList.add(
+        "hidden"
+    );
 
-    observer.observe(section);
+    observer.observe(
+        section
+    );
 
 });
-
-
-
-/* ---------------------------------------------------------
-   AUTOMATIC COPYRIGHT YEAR
-   --------------------------------------------------------- */
-
-const currentYear =
-    document.getElementById("current-year");
-
-
-if (currentYear) {
-
-    currentYear.textContent =
-        new Date().getFullYear();
-
-}
