@@ -1,15 +1,3 @@
-// Book Demo button
-const demoButtons = document.querySelectorAll(
-    '.nav-button, .primary-button, .cta button'
-);
-
-demoButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        alert('Demo booking will be available soon!');
-    });
-});
-
-
 // Simple fade-in animation
 const sections = document.querySelectorAll('.section, .cta');
 
