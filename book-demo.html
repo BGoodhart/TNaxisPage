@@ -1,528 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Book a Demo | TNaxis</title>
+    <title>Book a Demo | TNaxis</title>
 
-  <meta
-    name="description"
-    content="Book a demo of TNaxis and see how AI-powered customer communication can help your business capture more leads and book more appointments."
-  >
+    <meta
+        name="description"
+        content="Book a demo of TNaxis and see how AI-powered customer communication can help your business capture more leads and book more appointments."
+    >
 
-  <!-- Favicon -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="assets/logo_black_background.png"
-  >
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/logo_black_background.png"
+    >
 
-  <!-- Inter Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-  <!-- Main website styles -->
-  <link rel="stylesheet" href="style.css">
+    <!-- Main website styles -->
+    <link rel="stylesheet" href="style.css">
 
-  <!-- Booking page styles -->
-  <link rel="stylesheet" href="booking.css">
+    <!-- Booking page styles -->
+    <link rel="stylesheet" href="booking.css">
+
 </head>
+
 
 <body class="booking-page">
 
-  <!-- NAVIGATION -->
-  <nav class="navbar">
 
-    <a href="index.html" class="nav-brand">
-      <img
-        src="assets/logo_with_name.png"
-        alt="TNaxis"
-        class="nav-logo"
-      >
-    </a>
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
 
-    <div class="nav-links">
-      <a href="index.html#how">How It Works</a>
-      <a href="index.html#demo">Demo</a>
-      <a href="index.html#features">Features</a>
-    </div>
+    <nav class="navbar">
 
-    <a href="book-demo.html" class="nav-button">
-      Book a Demo
-    </a>
+        <a href="index.html" class="nav-brand">
 
-  </nav>
-
-
-  <!-- BOOKING HERO -->
-  <main class="booking-main">
-
-    <section class="booking-intro">
-
-      <h1>
-        See TNaxis in action.
-      </h1>
-
-      <p class="booking-description">
-        See how TNaxis can respond to missed calls, answer
-        customer questions, qualify leads, and help turn
-        conversations into booked appointments.
-      </p>
-
-      <div class="booking-benefits">
-
-        <div class="booking-benefit">
-          <span>✓</span>
-          15–20 minute demo
-        </div>
-
-        <div class="booking-benefit">
-          <span>✓</span>
-          Personalized to your business
-        </div>
-
-        <div class="booking-benefit">
-          <span>✓</span>
-          No commitment
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- BOOKING CARD -->
-    <section class="booking-card">
-
-      <!-- PROGRESS -->
-      <div class="booking-progress">
-
-        <div class="progress-item active" id="progress-business">
-          <div class="progress-circle">1</div>
-          <span>Business</span>
-        </div>
-
-        <div class="progress-line"></div>
-
-        <div class="progress-item" id="progress-schedule">
-          <div class="progress-circle">2</div>
-          <span>Schedule</span>
-        </div>
-
-        <div class="progress-line"></div>
-
-        <div class="progress-item" id="progress-confirm">
-          <div class="progress-circle">3</div>
-          <span>Confirmed</span>
-        </div>
-
-      </div>
-
-
-      <!-- STEP 1 -->
-      <div class="booking-step active" id="step-1">
-
-        <div class="booking-step-header">
-          <h2>Tell us about your business.</h2>
-
-          <p>
-            We'll use this information to make your demo
-            relevant to your business.
-          </p>
-        </div>
-
-
-        <form id="business-form">
-
-          <div class="form-row">
-
-            <div class="form-group">
-              <label for="name">
-                Your Name <span>*</span>
-              </label>
-
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="John Smith"
-                autocomplete="name"
-                required
-              >
-            </div>
-
-
-            <div class="form-group">
-              <label for="business">
-                Business Name <span>*</span>
-              </label>
-
-              <input
-                type="text"
-                id="business"
-                name="business"
-                placeholder="Smith Plumbing"
-                autocomplete="organization"
-                required
-              >
-            </div>
-
-          </div>
-
-
-          <div class="form-row">
-
-            <div class="form-group">
-              <label for="email">
-                Business Email <span>*</span>
-              </label>
-
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="john@company.com"
-                autocomplete="email"
-                required
-              >
-            </div>
-
-
-            <div class="form-group">
-              <label for="phone">
-                Phone Number
-              </label>
-
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="(555) 555-5555"
-                autocomplete="tel"
-              >
-            </div>
-
-          </div>
-
-
-          <div class="form-group">
-            <label for="business-type">
-              What type of business do you run? <span>*</span>
-            </label>
-
-            <select
-              id="business-type"
-              name="business-type"
-              required
+            <img
+                src="assets/logo_with_name.png"
+                alt="TNaxis"
+                class="nav-logo"
             >
 
-              <option value="" disabled selected>
-                Select your industry
-              </option>
-
-              <option value="plumbing">
-                Plumbing
-              </option>
-
-              <option value="hvac">
-                HVAC
-              </option>
-
-              <option value="electrical">
-                Electrical
-              </option>
-
-              <option value="roofing">
-                Roofing
-              </option>
-
-              <option value="landscaping">
-                Landscaping
-              </option>
-
-              <option value="home-services">
-                Other Home Services
-              </option>
-
-              <option value="automotive">
-                Automotive
-              </option>
-
-              <option value="professional-services">
-                Professional Services
-              </option>
-
-              <option value="other">
-                Other
-              </option>
-
-            </select>
-          </div>
-
-
-          <div class="form-group">
-            <label for="website">
-              Business Website
-              <span class="optional">(optional)</span>
-            </label>
-
-            <input
-              type="text"
-              id="website"
-              name="website"
-              placeholder="yourbusiness.com"
-            >
-          </div>
-
-
-          <div class="form-action">
-            <button
-              type="submit"
-              class="booking-primary-button"
-            >
-              Continue to Scheduling
-              <span>→</span>
-            </button>
-          </div>
-
-        </form>
-
-      </div>
-
-
-      <!-- STEP 2 -->
-      <div class="booking-step" id="step-2">
-
-        <button
-          type="button"
-          class="back-button"
-          id="back-to-business"
-        >
-          ← Back
-        </button>
-
-
-        <div class="booking-step-header">
-          <h2>Choose a time.</h2>
-
-          <p>
-            Select an available time for your TNaxis demo.
-          </p>
-        </div>
-
-
-        <div class="scheduler-layout">
-
-          <!-- DATE SELECTION -->
-          <div class="date-selection">
-
-            <h3>Select a day</h3>
-
-            <div class="date-options" id="date-options">
-
-              <!-- Generated by JavaScript -->
-
-            </div>
-
-          </div>
-
-
-          <!-- TIME SELECTION -->
-          <div class="time-selection">
-
-            <h3 id="time-heading">
-              Select a day first
-            </h3>
-
-            <div class="time-options" id="time-options">
-
-              <p class="schedule-placeholder">
-                Choose a date to see available times.
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="selected-appointment" id="selected-appointment">
-
-          <div>
-            <span class="selected-label">
-              Selected time
-            </span>
-
-            <strong id="selected-time-text">
-              No time selected
-            </strong>
-          </div>
-
-        </div>
-
-
-        <div class="schedule-actions">
-
-          <button
-            type="button"
-            class="booking-primary-button"
-            id="book-demo-button"
-            disabled
-          >
-            Book Demo
-            <span>→</span>
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- STEP 3 -->
-      <div class="booking-step confirmation-step" id="step-3">
-
-        <div class="confirmation-icon">
-          ✓
-        </div>
-
-        <p class="eyebrow dark confirmation-eyebrow">
-          DEMO SCHEDULED
-        </p>
-
-        <h2>
-          You're booked.
-        </h2>
-
-        <p class="confirmation-message">
-          Your TNaxis demo has been scheduled.
-        </p>
-
-
-        <div class="confirmation-details">
-
-          <div class="confirmation-detail">
-
-            <span>Date & Time</span>
-
-            <strong id="confirmation-date">
-              —
-            </strong>
-
-          </div>
-
-
-          <div class="confirmation-detail">
-
-            <span>Name</span>
-
-            <strong id="confirmation-name">
-              —
-            </strong>
-
-          </div>
-
-
-          <div class="confirmation-detail">
-
-            <span>Business</span>
-
-            <strong id="confirmation-business">
-              —
-            </strong>
-
-          </div>
-
-
-          <div class="confirmation-detail">
-
-            <span>Email</span>
-
-            <strong id="confirmation-email">
-              —
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <p class="confirmation-note">
-          We'll send meeting details and additional information
-          to the email address you provided.
-        </p>
-
-
-        <a
-          href="index.html"
-          class="booking-secondary-button"
-        >
-          Return to TNaxis
         </a>
 
-      </div>
 
-    </section>
-
-  </main>
-
-
-  <!-- =====================================================
-     BUSINESS FOOTER
-     ===================================================== -->
-
-<footer class="site-footer">
-
-    <div class="footer-container">
-
-
-        <!-- BRAND -->
-
-        <div class="footer-brand">
-
-            <a href="index.html">
-
-                <img
-                    src="assets/logo_with_name.png"
-                    alt="TNaxis"
-                    class="footer-logo"
-                >
-
-            </a>
-
-
-            <p class="footer-description">
-                AI-powered customer communication that helps
-                businesses respond faster, capture leads, and
-                book more appointments.
-            </p>
-
-
-            <p class="footer-tagline">
-                Always Persistent.
-            </p>
-
-        </div>
-
-
-
-        <!-- PRODUCT -->
-
-        <div class="footer-column">
-
-            <h3>
-                Product
-            </h3>
+        <div class="nav-links">
 
             <a href="index.html#how">
                 How It Works
@@ -536,88 +75,645 @@
                 Features
             </a>
 
-            <a href="book-demo.html">
-                Book a Demo
-            </a>
-
         </div>
 
 
+        <a
+            href="book-demo.html"
+            class="nav-button"
+        >
+            Book a Demo
+        </a>
 
-        <!-- COMPANY -->
-
-        <div class="footer-column">
-
-            <h3>
-                Company
-            </h3>
-
-            <a href="mailto:hello@tnaxisai.com">
-                Contact
-            </a>
-
-            <a href="mailto:hello@tnaxisai.com">
-                Support
-            </a>
-
-        </div>
+    </nav>
 
 
 
-        <!-- CONTACT -->
+    <!-- =====================================================
+         BOOKING CONTENT
+         ===================================================== -->
 
-        <div class="footer-column footer-contact">
+    <main class="booking-main">
 
-            <h3>
-                Contact
-            </h3>
 
-            <p>
-                Questions or interested in TNaxis?
+        <!-- =================================================
+             BOOKING INTRO
+             ================================================= -->
+
+        <section class="booking-intro">
+
+            <h1>
+                See TNaxis in action.
+            </h1>
+
+
+            <p class="booking-description">
+
+                See how TNaxis can respond to missed calls,
+                answer customer questions, qualify leads,
+                and help turn conversations into booked
+                appointments.
+
             </p>
 
-            <a
-                href="mailto:hello@tnaxisai.com"
-                class="footer-email"
+
+            <div class="booking-benefits">
+
+                <div class="booking-benefit">
+                    <span>✓</span>
+                    15–20 minute demo
+                </div>
+
+
+                <div class="booking-benefit">
+                    <span>✓</span>
+                    Personalized to your business
+                </div>
+
+
+                <div class="booking-benefit">
+                    <span>✓</span>
+                    No commitment
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BOOKING CARD
+             ================================================= -->
+
+        <section class="booking-card">
+
+
+            <!-- =============================================
+                 PROGRESS INDICATOR
+                 ============================================= -->
+
+            <div class="booking-progress">
+
+
+                <div
+                    class="progress-item active"
+                    id="progress-business"
+                >
+
+                    <div class="progress-circle">
+                        1
+                    </div>
+
+                    <span>
+                        Business
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div
+                    class="progress-item"
+                    id="progress-schedule"
+                >
+
+                    <div class="progress-circle">
+                        2
+                    </div>
+
+                    <span>
+                        Schedule
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div
+                    class="progress-item"
+                    id="progress-confirm"
+                >
+
+                    <div class="progress-circle">
+                        3
+                    </div>
+
+                    <span>
+                        Confirmed
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 1 — BUSINESS INFORMATION
+                 ================================================= -->
+
+            <div
+                class="booking-step active"
+                id="step-1"
             >
-                hello@tnaxisai.com
-            </a>
 
-            <a
-                href="book-demo.html"
-                class="footer-demo-link"
+                <div class="booking-step-header">
+
+                    <h2>
+                        Tell us about your business.
+                    </h2>
+
+                    <p>
+                        We'll use this information to make your
+                        demo relevant to your business.
+                    </p>
+
+                </div>
+
+
+
+                <form id="business-form">
+
+
+                    <!-- NAME + BUSINESS -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="name">
+                                Your Name <span>*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="John Smith"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="business">
+                                Business Name <span>*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="business"
+                                name="business"
+                                placeholder="Smith Plumbing"
+                                autocomplete="organization"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EMAIL + PHONE -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Business Email <span>*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="john@company.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="phone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="(555) 555-5555"
+                                autocomplete="tel"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BUSINESS TYPE -->
+
+                    <div class="form-group">
+
+                        <label for="business-type">
+                            What type of business do you run?
+                            <span>*</span>
+                        </label>
+
+
+                        <select
+                            id="business-type"
+                            name="business-type"
+                            required
+                        >
+
+                            <option
+                                value=""
+                                disabled
+                                selected
+                            >
+                                Select your industry
+                            </option>
+
+                            <option value="plumbing">
+                                Plumbing
+                            </option>
+
+                            <option value="hvac">
+                                HVAC
+                            </option>
+
+                            <option value="electrical">
+                                Electrical
+                            </option>
+
+                            <option value="roofing">
+                                Roofing
+                            </option>
+
+                            <option value="landscaping">
+                                Landscaping
+                            </option>
+
+                            <option value="home-services">
+                                Other Home Services
+                            </option>
+
+                            <option value="automotive">
+                                Automotive
+                            </option>
+
+                            <option value="professional-services">
+                                Professional Services
+                            </option>
+
+                            <option value="other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- WEBSITE -->
+
+                    <div class="form-group">
+
+                        <label for="website">
+
+                            Business Website
+
+                            <span class="optional">
+                                (optional)
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="website"
+                            name="website"
+                            placeholder="yourbusiness.com"
+                        >
+
+                    </div>
+
+
+
+                    <!-- CONTINUE -->
+
+                    <div class="form-action">
+
+                        <button
+                            type="submit"
+                            class="booking-primary-button"
+                        >
+
+                            Continue to Scheduling
+
+                            <span>→</span>
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 2 — SCHEDULING
+                 ================================================= -->
+
+            <div
+                class="booking-step"
+                id="step-2"
             >
-                Book a Demo →
-            </a>
-
-        </div>
-
-    </div>
 
 
-
-    <!-- BOTTOM FOOTER -->
-
-    <div class="footer-bottom">
-
-        <p>
-            © <span id="current-year">2026</span> TNaxis.
-            All rights reserved.
-        </p>
+                <button
+                    type="button"
+                    class="back-button"
+                    id="back-to-business"
+                >
+                    ← Back
+                </button>
 
 
-        <div class="footer-legal">
 
-            <a href="#">
-                Privacy
-            </a>
+                <div class="booking-step-header">
 
-            <a href="#">
-                Terms
-            </a>
+                    <h2>
+                        Choose a time.
+                    </h2>
 
-        </div>
+                    <p>
+                        Select an available time for your
+                        TNaxis demo.
+                    </p>
 
-    </div>
+                </div>
 
-</footer>
+
+
+                <div class="scheduler-layout">
+
+
+                    <!-- DATE SELECTION -->
+
+                    <div class="date-selection">
+
+                        <h3>
+                            Select a day
+                        </h3>
+
+                        <div
+                            class="date-options"
+                            id="date-options"
+                        >
+                            <!-- Generated by booking.js -->
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- TIME SELECTION -->
+
+                    <div class="time-selection">
+
+                        <h3 id="time-heading">
+                            Select a day first
+                        </h3>
+
+
+                        <div
+                            class="time-options"
+                            id="time-options"
+                        >
+
+                            <p class="schedule-placeholder">
+                                Choose a date to see available
+                                times.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SELECTED APPOINTMENT -->
+
+                <div
+                    class="selected-appointment"
+                    id="selected-appointment"
+                >
+
+                    <div>
+
+                        <span class="selected-label">
+                            Selected time
+                        </span>
+
+                        <strong id="selected-time-text">
+                            No time selected
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BOOK BUTTON -->
+
+                <div class="schedule-actions">
+
+                    <button
+                        type="button"
+                        class="booking-primary-button"
+                        id="book-demo-button"
+                        disabled
+                    >
+
+                        Book Demo
+
+                        <span>→</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 3 — CONFIRMATION
+                 ================================================= -->
+
+            <div
+                class="booking-step confirmation-step"
+                id="step-3"
+            >
+
+
+                <div class="confirmation-icon">
+                    ✓
+                </div>
+
+
+                <p class="eyebrow dark confirmation-eyebrow">
+                    DEMO SCHEDULED
+                </p>
+
+
+                <h2>
+                    You're booked.
+                </h2>
+
+
+                <p class="confirmation-message">
+                    Your TNaxis demo has been scheduled.
+                </p>
+
+
+
+                <!-- CONFIRMATION DETAILS -->
+
+                <div class="confirmation-details">
+
+
+                    <div class="confirmation-detail">
+
+                        <span>
+                            Date & Time
+                        </span>
+
+                        <strong id="confirmation-date">
+                            —
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="confirmation-detail">
+
+                        <span>
+                            Name
+                        </span>
+
+                        <strong id="confirmation-name">
+                            —
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="confirmation-detail">
+
+                        <span>
+                            Business
+                        </span>
+
+                        <strong id="confirmation-business">
+                            —
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="confirmation-detail">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="confirmation-email">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <p class="confirmation-note">
+
+                    We'll send meeting details and additional
+                    information to the email address you
+                    provided.
+
+                </p>
+
+
+
+                <a
+                    href="index.html"
+                    class="booking-secondary-button"
+                >
+                    Return to TNaxis
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         SHARED FOOTER
+         Loaded automatically from footer.html
+         ===================================================== -->
+
+    <div id="footer-placeholder"></div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+    <script src="booking.js"></script>
+
+
+</body>
+
+</html>

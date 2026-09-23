@@ -866,29 +866,29 @@ button {
 
   font-size: 12px;
 }
-
 /* =========================================================
-   BUSINESS FOOTER
+   FOOTER
    ========================================================= */
 
 .site-footer {
     position: relative;
 
     padding:
-        70px
+        72px
         8%
-        30px;
+        28px;
 
     background: #08060D;
 
     border-top:
-        1px solid rgba(255, 255, 255, 0.08);
+        1px solid rgba(255, 255, 255, 0.07);
 }
 
 
+/* Main footer columns */
+
 .footer-container {
     width: 100%;
-
     max-width: 1160px;
 
     margin: 0 auto;
@@ -896,54 +896,13 @@ button {
     display: grid;
 
     grid-template-columns:
-        2fr
-        1fr
-        1fr
-        1.4fr;
+        repeat(4, 1fr);
 
-    gap: 55px;
+    gap: 70px;
 }
 
 
-.footer-brand {
-    max-width: 330px;
-}
-
-
-.footer-logo {
-    display: block;
-
-    width: auto;
-
-    height: 55px;
-
-    margin-bottom: 20px;
-
-    object-fit: contain;
-}
-
-
-.footer-description {
-    margin-bottom: 17px;
-
-    color: #929AA5;
-
-    font-size: 13px;
-
-    line-height: 1.7;
-}
-
-
-.footer-tagline {
-    color: var(--brand-light);
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-    letter-spacing: 0.5px;
-}
-
+/* Individual column */
 
 .footer-column {
     display: flex;
@@ -952,77 +911,64 @@ button {
 
     align-items: flex-start;
 
-    gap: 11px;
+    gap: 13px;
 }
 
 
-.footer-column h3 {
-    margin-bottom: 7px;
+/* Column headings */
 
-    color: #F0F2F5;
+.footer-column h3 {
+    margin: 0 0 9px;
+
+    color: #F4F6F9;
 
     font-size: 13px;
 
     font-weight: 700;
+
+    letter-spacing: 0.01em;
 }
 
 
+/* Footer links */
+
 .footer-column a {
-    color: #929AA5;
+    color: #8F96A1;
 
     font-size: 12px;
 
+    line-height: 1.5;
+
+    text-decoration: none;
+
     transition:
-        color 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 
 .footer-column a:hover {
-    color: var(--white);
+    color: #F4F6F9;
+
+    transform: translateX(2px);
 }
 
 
-.footer-contact p {
-    color: #929AA5;
 
-    font-size: 12px;
-
-    line-height: 1.6;
-}
-
-
-.footer-column .footer-email {
-    color: #D4D8DF;
-
-    font-weight: 500;
-}
-
-
-.footer-column .footer-demo-link {
-    margin-top: 4px;
-
-    color: var(--brand-light);
-
-    font-weight: 600;
-}
-
-
-.footer-column .footer-demo-link:hover {
-    color: #DDD6FE;
-}
-
+/* =========================================================
+   FOOTER BOTTOM BAR
+   ========================================================= */
 
 .footer-bottom {
     width: 100%;
-
     max-width: 1160px;
 
     margin:
-        55px
+        65px
         auto
         0;
 
-    padding-top: 25px;
+    padding-top: 24px;
 
     display: flex;
 
@@ -1035,54 +981,81 @@ button {
 }
 
 
-.footer-bottom p,
-.footer-legal a {
-    color: #6F7680;
+.footer-bottom-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.footer-bottom-left strong {
+    color: #F4F6F9;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.footer-bottom-left span {
+    color: #666D77;
 
     font-size: 11px;
 }
 
 
+/* Legal links */
+
 .footer-legal {
     display: flex;
 
-    gap: 22px;
+    align-items: center;
+
+    gap: 24px;
 }
 
 
 .footer-legal a {
+    color: #666D77;
+
+    font-size: 11px;
+
+    text-decoration: none;
+
     transition:
         color 0.2s ease;
 }
 
 
 .footer-legal a:hover {
-    color: #C8CDD4;
+    color: #BCC3CC;
 }
 
 
 
 /* =========================================================
-   FOOTER TABLET
+   TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
 
-    .footer-container {
-        grid-template-columns:
-            2fr
-            1fr
-            1fr;
-
-        gap: 45px;
+    .site-footer {
+        padding:
+            60px
+            7%
+            28px;
     }
 
 
-    .footer-contact {
-        grid-column:
-            1 / -1;
+    .footer-container {
+        grid-template-columns:
+            repeat(2, 1fr);
 
-        padding-top: 15px;
+        gap:
+            50px
+            60px;
     }
 
 }
@@ -1090,46 +1063,62 @@ button {
 
 
 /* =========================================================
-   FOOTER MOBILE
+   MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
 
     .site-footer {
         padding:
-            55px
+            50px
             25px
             25px;
     }
 
 
     .footer-container {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            repeat(2, 1fr);
 
-        gap: 35px;
-    }
-
-
-    .footer-contact {
-        grid-column: auto;
-
-        padding-top: 0;
-    }
-
-
-    .footer-brand {
-        max-width: 100%;
+        gap:
+            42px
+            25px;
     }
 
 
     .footer-bottom {
-        margin-top: 45px;
+        margin-top: 50px;
 
         flex-direction: column;
 
         align-items: flex-start;
 
-        gap: 15px;
+        gap: 18px;
+    }
+
+
+    .footer-bottom-left {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 7px;
+    }
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
     }
 
 }
@@ -1845,6 +1834,41 @@ body.page-entering .cta {
     body.page-entering .cta {
         opacity: 1;
         transform: none;
+    }
+
+}
+/* =========================================================
+   HOMEPAGE CTA → FOOTER SPACING
+   ========================================================= */
+
+/*
+ * Adds breathing room below the final Book a Demo button
+ * before the shared footer begins.
+ *
+ * Only affects the homepage CTA.
+ * Does NOT affect the booking page.
+ */
+
+.cta {
+    padding-bottom: 110px;
+}
+
+
+/* Tablet */
+@media (max-width: 900px) {
+
+    .cta {
+        padding-bottom: 90px;
+    }
+
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .cta {
+        padding-bottom: 75px;
     }
 
 }
