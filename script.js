@@ -52,13 +52,14 @@ if (footerPlaceholder) {
 }
 
 
-
 /* ---------------------------------------------------------
    PAGE ENTRANCE
    --------------------------------------------------------- */
 
-document.body.classList.add("page-entering");
+// Make sure a previous transition state is cleared.
+document.body.classList.remove("page-leaving");
 
+document.body.classList.add("page-entering");
 
 requestAnimationFrame(() => {
 
@@ -73,16 +74,54 @@ requestAnimationFrame(() => {
 });
 
 
+/* ---------------------------------------------------------
+   FIX BROWSER BACK / FORWARD
+   --------------------------------------------------------- */
+
+/*
+ * Browsers may restore a previous page from memory instead
+ * of fully reloading it.
+ *
+ * If the old page was saved while "page-leaving" was active,
+ * it could appear blank/black when the user presses Back.
+ *
+ * Clear the transition classes whenever a page is restored.
+ */
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        document.body.classList.remove(
+            "page-leaving"
+        );
+
+        document.body.classList.remove(
+            "page-entering"
+        );
+
+    }
+);
+
 
 /* ---------------------------------------------------------
    PAGE LINK TRANSITIONS
    --------------------------------------------------------- */
 
+/*
+ * Apply transitions to:
+ *
+ * - .html pages
+ * - the clean homepage URL "/"
+ *
+ * Section links such as /#features are intentionally not
+ * included because those should jump directly to a section.
+ */
+
 const pageLinks =
     document.querySelectorAll(
-        'a[href$=".html"]'
+        'a[href$=".html"], a[href="/"]'
     );
-
 
 pageLinks.forEach(link => {
 
@@ -95,7 +134,7 @@ pageLinks.forEach(link => {
 
 
             /*
-             * Ignore links opening in another tab
+             * Ignore links opening in another tab.
              */
 
             if (link.target === "_blank") {
@@ -104,14 +143,48 @@ pageLinks.forEach(link => {
 
 
             /*
-             * Prevent instant navigation
+             * Ignore modified clicks such as:
+             *
+             * Ctrl + Click
+             * Command + Click
+             * Shift + Click
+             * Alt + Click
+             */
+
+            if (
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+            ) {
+                return;
+            }
+
+
+            /*
+             * Prevent instant navigation.
              */
 
             event.preventDefault();
 
 
             /*
+             * Prevent multiple clicks while the
+             * transition is already happening.
+             */
+
+            if (
+                document.body.classList.contains(
+                    "page-leaving"
+                )
+            ) {
+                return;
+            }
+
+
+            /*
              * Start page transition.
+             *
              * Navbar remains unchanged.
              */
 
@@ -121,7 +194,7 @@ pageLinks.forEach(link => {
 
 
             /*
-             * Navigate after transition finishes
+             * Navigate after transition finishes.
              */
 
             setTimeout(() => {
@@ -137,7 +210,6 @@ pageLinks.forEach(link => {
 });
 
 
-
 /* ---------------------------------------------------------
    SECTION FADE-IN ANIMATION
    --------------------------------------------------------- */
@@ -148,50 +220,59 @@ const sections =
     );
 
 
-const observer =
-    new IntersectionObserver(
+/*
+ * Only create the observer if there are sections
+ * on the current page that need animation.
+ */
 
-        entries => {
+if (sections.length > 0) {
 
-            entries.forEach(entry => {
+    const observer =
+        new IntersectionObserver(
 
-                if (entry.isIntersecting) {
+            entries => {
 
-                    entry.target.classList.add(
-                        "show"
-                    );
+                entries.forEach(entry => {
 
-                    /*
-                     * Stop observing once visible.
-                     * Prevents unnecessary work.
-                     */
+                    if (entry.isIntersecting) {
 
-                    observer.unobserve(
-                        entry.target
-                    );
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold: 0.08
-        }
-
-    );
+                        entry.target.classList.add(
+                            "show"
+                        );
 
 
+                        /*
+                         * Stop observing once visible.
+                         * Prevents unnecessary work.
+                         */
 
-sections.forEach(section => {
+                        observer.unobserve(
+                            entry.target
+                        );
 
-    section.classList.add(
-        "hidden"
-    );
+                    }
 
-    observer.observe(
-        section
-    );
+                });
 
-});
+            },
+
+            {
+                threshold: 0.08
+            }
+
+        );
+
+
+    sections.forEach(section => {
+
+        section.classList.add(
+            "hidden"
+        );
+
+        observer.observe(
+            section
+        );
+
+    });
+
+}
