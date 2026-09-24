@@ -75,33 +75,17 @@ requestAnimationFrame(() => {
 
 
 /* ---------------------------------------------------------
-   FIX BROWSER BACK / FORWARD
+   PREPARE PAGE BEFORE BROWSER CACHE
    --------------------------------------------------------- */
 
-/*
- * Browsers may restore a previous page from memory instead
- * of fully reloading it.
- *
- * If the old page was saved while "page-leaving" was active,
- * it could appear blank/black when the user presses Back.
- *
- * Clear the transition classes whenever a page is restored.
- */
+window.addEventListener("pagehide", function () {
 
-window.addEventListener(
-    "pageshow",
-    function () {
+    // Do not allow the browser to save the page
+    // visually in its faded-out state.
+    document.body.classList.remove("page-leaving");
+    document.body.classList.remove("page-entering");
 
-        document.body.classList.remove(
-            "page-leaving"
-        );
-
-        document.body.classList.remove(
-            "page-entering"
-        );
-
-    }
-);
+});
 
 
 /* ---------------------------------------------------------
