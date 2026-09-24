@@ -95,11 +95,12 @@ businessForm.addEventListener("submit", function(event) {
    BACK BUTTON
    --------------------------------------------------------- */
 
-backButton.addEventListener("click", function() {
-
-  showStep(1);
-
-});
+if (backButton) {
+  backButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    showStep(1);
+  });
+}
 
 
 /* ---------------------------------------------------------
@@ -164,7 +165,7 @@ function showStep(stepNumber) {
   window.scrollTo({
     top: 0,
     behavior: "smooth"
-  });
+    });
 
 }
 
