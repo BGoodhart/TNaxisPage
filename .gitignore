@@ -1,0 +1,20 @@
+# Environment variables / secrets
+.env
+**/.env
+.env.*
+**/.env.*
+
+# Google credentials
+credentials.json
+**/credentials.json
+
+# Node dependencies
+node_modules/
+**/node_modules/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
