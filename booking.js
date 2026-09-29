@@ -1,48 +1,65 @@
 /* =========================================================
    TNAXIS BOOKING SYSTEM
-   Front-end demo version
+   Google Calendar Integration
    ========================================================= */
+
+
+/* ---------------------------------------------------------
+   API CONFIGURATION
+   --------------------------------------------------------- */
+
+// Local development backend.
+// We will change this when the backend is deployed.
+const API_URL = "http://localhost:3000";
 
 
 /* ---------------------------------------------------------
    ELEMENTS
    --------------------------------------------------------- */
 
-const businessForm = document.getElementById("business-form");
+const businessForm =
+    document.getElementById("business-form");
 
-const step1 = document.getElementById("step-1");
-const step2 = document.getElementById("step-2");
-const step3 = document.getElementById("step-3");
+const step1 =
+    document.getElementById("step-1");
+
+const step2 =
+    document.getElementById("step-2");
+
+const step3 =
+    document.getElementById("step-3");
+
 
 const progressBusiness =
-  document.getElementById("progress-business");
+    document.getElementById("progress-business");
 
 const progressSchedule =
-  document.getElementById("progress-schedule");
+    document.getElementById("progress-schedule");
 
 const progressConfirm =
-  document.getElementById("progress-confirm");
+    document.getElementById("progress-confirm");
+
 
 const backButton =
-  document.getElementById("back-to-business");
+    document.getElementById("back-to-business");
 
 const dateOptions =
-  document.getElementById("date-options");
+    document.getElementById("date-options");
 
 const timeOptions =
-  document.getElementById("time-options");
+    document.getElementById("time-options");
 
 const timeHeading =
-  document.getElementById("time-heading");
+    document.getElementById("time-heading");
 
 const selectedAppointment =
-  document.getElementById("selected-appointment");
+    document.getElementById("selected-appointment");
 
 const selectedTimeText =
-  document.getElementById("selected-time-text");
+    document.getElementById("selected-time-text");
 
 const bookDemoButton =
-  document.getElementById("book-demo-button");
+    document.getElementById("book-demo-button");
 
 
 /* ---------------------------------------------------------
@@ -50,24 +67,10 @@ const bookDemoButton =
    --------------------------------------------------------- */
 
 let selectedDate = null;
+
+let selectedDateString = null;
+
 let selectedTime = null;
-
-
-/*
-  TEMPORARY AVAILABLE TIMES
-
-  Later these will come from your real calendar
-  or scheduling service.
-*/
-
-const availableTimes = [
-  "9:00 AM",
-  "10:00 AM",
-  "11:30 AM",
-  "1:00 PM",
-  "2:30 PM",
-  "4:00 PM"
-];
 
 
 /* ---------------------------------------------------------
@@ -75,20 +78,26 @@ const availableTimes = [
    BUSINESS INFORMATION
    --------------------------------------------------------- */
 
-businessForm.addEventListener("submit", function(event) {
+businessForm.addEventListener(
+    "submit",
+    function(event) {
 
-  event.preventDefault();
+        event.preventDefault();
 
-  if (!businessForm.checkValidity()) {
 
-    businessForm.reportValidity();
+        if (!businessForm.checkValidity()) {
 
-    return;
-  }
+            businessForm.reportValidity();
 
-  showStep(2);
+            return;
 
-});
+        }
+
+
+        showStep(2);
+
+    }
+);
 
 
 /* ---------------------------------------------------------
@@ -96,10 +105,18 @@ businessForm.addEventListener("submit", function(event) {
    --------------------------------------------------------- */
 
 if (backButton) {
-  backButton.addEventListener("click", function(event) {
-    event.preventDefault();
-    showStep(1);
-  });
+
+    backButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            showStep(1);
+
+        }
+    );
+
 }
 
 
@@ -109,62 +126,75 @@ if (backButton) {
 
 function showStep(stepNumber) {
 
-  step1.classList.remove("active");
-  step2.classList.remove("active");
-  step3.classList.remove("active");
-
-  progressBusiness.classList.remove(
-    "active",
-    "complete"
-  );
-
-  progressSchedule.classList.remove(
-    "active",
-    "complete"
-  );
-
-  progressConfirm.classList.remove(
-    "active",
-    "complete"
-  );
+    step1.classList.remove("active");
+    step2.classList.remove("active");
+    step3.classList.remove("active");
 
 
-  if (stepNumber === 1) {
+    progressBusiness.classList.remove(
+        "active",
+        "complete"
+    );
 
-    step1.classList.add("active");
+    progressSchedule.classList.remove(
+        "active",
+        "complete"
+    );
 
-    progressBusiness.classList.add("active");
-
-  }
-
-
-  if (stepNumber === 2) {
-
-    step2.classList.add("active");
-
-    progressBusiness.classList.add("complete");
-
-    progressSchedule.classList.add("active");
-
-  }
+    progressConfirm.classList.remove(
+        "active",
+        "complete"
+    );
 
 
-  if (stepNumber === 3) {
+    if (stepNumber === 1) {
 
-    step3.classList.add("active");
+        step1.classList.add("active");
 
-    progressBusiness.classList.add("complete");
+        progressBusiness.classList.add(
+            "active"
+        );
 
-    progressSchedule.classList.add("complete");
-
-    progressConfirm.classList.add("active");
-
-  }
+    }
 
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    if (stepNumber === 2) {
+
+        step2.classList.add("active");
+
+        progressBusiness.classList.add(
+            "complete"
+        );
+
+        progressSchedule.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if (stepNumber === 3) {
+
+        step3.classList.add("active");
+
+        progressBusiness.classList.add(
+            "complete"
+        );
+
+        progressSchedule.classList.add(
+            "complete"
+        );
+
+        progressConfirm.classList.add(
+            "active"
+        );
+
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
 
 }
@@ -176,50 +206,56 @@ function showStep(stepNumber) {
 
 function generateAvailableDates() {
 
-  dateOptions.innerHTML = "";
-
-  const today = new Date();
-
-  let daysAdded = 0;
-
-  let offset = 1;
+    dateOptions.innerHTML = "";
 
 
-  /*
-    Show the next five weekdays.
-  */
-
-  while (daysAdded < 5) {
-
-    const date = new Date(today);
-
-    date.setDate(
-      today.getDate() + offset
-    );
+    const today =
+        new Date();
 
 
-    const dayOfWeek = date.getDay();
+    let daysAdded = 0;
+
+    let offset = 1;
 
 
     /*
-      Skip Saturday and Sunday.
+       Show the next five weekdays.
     */
 
-    if (
-      dayOfWeek !== 0 &&
-      dayOfWeek !== 6
-    ) {
+    while (daysAdded < 5) {
 
-      createDateButton(date);
+        const date =
+            new Date(today);
 
-      daysAdded++;
+
+        date.setDate(
+            today.getDate() + offset
+        );
+
+
+        const dayOfWeek =
+            date.getDay();
+
+
+        /*
+           Skip Saturday and Sunday.
+        */
+
+        if (
+            dayOfWeek !== 0 &&
+            dayOfWeek !== 6
+        ) {
+
+            createDateButton(date);
+
+            daysAdded++;
+
+        }
+
+
+        offset++;
 
     }
-
-
-    offset++;
-
-  }
 
 }
 
@@ -230,58 +266,98 @@ function generateAvailableDates() {
 
 function createDateButton(date) {
 
-  const button =
-    document.createElement("button");
-
-  button.type = "button";
-
-  button.className = "date-option";
+    const button =
+        document.createElement("button");
 
 
-  const weekday =
-    date.toLocaleDateString(
-      "en-US",
-      {
-        weekday: "long"
-      }
+    button.type =
+        "button";
+
+    button.className =
+        "date-option";
+
+
+    const weekday =
+        date.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long"
+            }
+        );
+
+
+    const dateText =
+        date.toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+
+    button.innerHTML = `
+        <span class="date-day">
+            ${weekday}
+        </span>
+
+        <span class="date-number">
+            ${dateText}
+        </span>
+    `;
+
+
+    button.addEventListener(
+        "click",
+        function() {
+
+            selectDate(
+                date,
+                button
+            );
+
+        }
     );
 
 
-  const dateText =
-    date.toLocaleDateString(
-      "en-US",
-      {
-        month: "short",
-        day: "numeric"
-      }
-    );
-
-
-  button.innerHTML = `
-    <span class="date-day">
-      ${weekday}
-    </span>
-
-    <span class="date-number">
-      ${dateText}
-    </span>
-  `;
-
-
-  button.addEventListener(
-    "click",
-    function() {
-
-      selectDate(
-        date,
+    dateOptions.appendChild(
         button
-      );
+    );
 
-    }
-  );
+}
 
 
-  dateOptions.appendChild(button);
+/* ---------------------------------------------------------
+   FORMAT DATE FOR API
+
+   Returns YYYY-MM-DD using local date values.
+   --------------------------------------------------------- */
+
+function formatDateForAPI(date) {
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
 
 }
 
@@ -290,97 +366,281 @@ function createDateButton(date) {
    SELECT DATE
    --------------------------------------------------------- */
 
-function selectDate(date, button) {
+async function selectDate(
+    date,
+    button
+) {
 
-  selectedDate = date;
+    selectedDate =
+        date;
 
-  selectedTime = null;
+    selectedDateString =
+        formatDateForAPI(date);
 
-
-  /*
-    Remove previous date selection.
-  */
-
-  document
-    .querySelectorAll(".date-option")
-    .forEach(function(option) {
-
-      option.classList.remove("selected");
-
-    });
+    selectedTime =
+        null;
 
 
-  button.classList.add("selected");
+    /*
+       Remove previous selection.
+    */
+
+    document
+        .querySelectorAll(
+            ".date-option"
+        )
+        .forEach(
+            function(option) {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
 
 
-  /*
-    Reset booking button.
-  */
-
-  bookDemoButton.disabled = true;
-
-  selectedAppointment.classList.remove(
-    "visible"
-  );
-
-
-  /*
-    Update time heading.
-  */
-
-  timeHeading.textContent =
-    date.toLocaleDateString(
-      "en-US",
-      {
-        weekday: "long",
-        month: "long",
-        day: "numeric"
-      }
+    button.classList.add(
+        "selected"
     );
 
 
-  generateTimeOptions();
+    /*
+       Reset booking controls.
+    */
+
+    bookDemoButton.disabled =
+        true;
+
+
+    selectedAppointment.classList.remove(
+        "visible"
+    );
+
+
+    /*
+       Update heading.
+    */
+
+    timeHeading.textContent =
+        date.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+            }
+        );
+
+
+    /*
+       Show loading message.
+    */
+
+    timeOptions.innerHTML = `
+        <p class="schedule-placeholder">
+            Checking availability...
+        </p>
+    `;
+
+
+    /*
+       Ask TNaxis backend for actual
+       Google Calendar availability.
+    */
+
+    try {
+
+        const availableTimes =
+            await getAvailableTimes(
+                selectedDateString
+            );
+
+
+        generateTimeOptions(
+            availableTimes
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Availability error:",
+            error
+        );
+
+
+        timeOptions.innerHTML = `
+            <p class="schedule-placeholder">
+                We couldn't load available times.
+                Please try again.
+            </p>
+        `;
+
+    }
 
 }
 
 
 /* ---------------------------------------------------------
-   GENERATE TIMES
+   GET REAL GOOGLE CALENDAR AVAILABILITY
    --------------------------------------------------------- */
 
-function generateTimeOptions() {
+async function getAvailableTimes(date) {
 
-  timeOptions.innerHTML = "";
-
-
-  availableTimes.forEach(function(time) {
-
-    const button =
-      document.createElement("button");
-
-    button.type = "button";
-
-    button.className = "time-option";
-
-    button.textContent = time;
-
-
-    button.addEventListener(
-      "click",
-      function() {
-
-        selectTime(
-          time,
-          button
+    const response =
+        await fetch(
+            `${API_URL}/api/availability?date=${encodeURIComponent(date)}`
         );
 
-      }
+
+    const data =
+        await response.json();
+
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
+        throw new Error(
+            data.message ||
+            "Could not retrieve availability."
+        );
+
+    }
+
+
+    return data.availableTimes;
+
+}
+
+
+/* ---------------------------------------------------------
+   GENERATE TIME BUTTONS
+   --------------------------------------------------------- */
+
+function generateTimeOptions(
+    availableTimes
+) {
+
+    timeOptions.innerHTML = "";
+
+
+    /*
+       No available appointments.
+    */
+
+    if (
+        !availableTimes ||
+        availableTimes.length === 0
+    ) {
+
+        timeOptions.innerHTML = `
+            <p class="schedule-placeholder">
+                No times are available on this day.
+                Please choose another date.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    availableTimes.forEach(
+        function(time) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+            button.className =
+                "time-option";
+
+
+            /*
+               Backend sends times such as:
+               09:00
+               13:00
+               14:30
+
+               Convert them to:
+               9:00 AM
+               1:00 PM
+               2:30 PM
+            */
+
+            button.textContent =
+                formatTimeForDisplay(
+                    time
+                );
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    selectTime(
+                        time,
+                        button
+                    );
+
+                }
+            );
+
+
+            timeOptions.appendChild(
+                button
+            );
+
+        }
     );
 
+}
 
-    timeOptions.appendChild(button);
 
-  });
+/* ---------------------------------------------------------
+   FORMAT TIME FOR DISPLAY
+   --------------------------------------------------------- */
+
+function formatTimeForDisplay(time) {
+
+    const parts =
+        time.split(":");
+
+
+    let hour =
+        Number(parts[0]);
+
+    const minutes =
+        parts[1];
+
+
+    const period =
+        hour >= 12
+            ? "PM"
+            : "AM";
+
+
+    hour =
+        hour % 12;
+
+
+    if (hour === 0) {
+
+        hour = 12;
+
+    }
+
+
+    return `${hour}:${minutes} ${period}`;
 
 }
 
@@ -389,44 +649,67 @@ function generateTimeOptions() {
    SELECT TIME
    --------------------------------------------------------- */
 
-function selectTime(time, button) {
+function selectTime(
+    time,
+    button
+) {
 
-  selectedTime = time;
+    /*
+       Keep API value such as "14:30".
+    */
 
-
-  document
-    .querySelectorAll(".time-option")
-    .forEach(function(option) {
-
-      option.classList.remove("selected");
-
-    });
-
-
-  button.classList.add("selected");
+    selectedTime =
+        time;
 
 
-  const formattedDate =
-    selectedDate.toLocaleDateString(
-      "en-US",
-      {
-        weekday: "long",
-        month: "long",
-        day: "numeric"
-      }
+    document
+        .querySelectorAll(
+            ".time-option"
+        )
+        .forEach(
+            function(option) {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
     );
 
 
-  selectedTimeText.textContent =
-    `${formattedDate} at ${selectedTime}`;
+    const formattedDate =
+        selectedDate.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+            }
+        );
 
 
-  selectedAppointment.classList.add(
-    "visible"
-  );
+    const formattedTime =
+        formatTimeForDisplay(
+            selectedTime
+        );
 
 
-  bookDemoButton.disabled = false;
+    selectedTimeText.textContent =
+        `${formattedDate} at ${formattedTime}`;
+
+
+    selectedAppointment.classList.add(
+        "visible"
+    );
+
+
+    bookDemoButton.disabled =
+        false;
 
 }
 
@@ -436,25 +719,242 @@ function selectTime(time, button) {
    --------------------------------------------------------- */
 
 bookDemoButton.addEventListener(
-  "click",
-  function() {
+    "click",
+    async function() {
 
-    if (
-      !selectedDate ||
-      !selectedTime
-    ) {
+        if (
+            !selectedDateString ||
+            !selectedTime
+        ) {
 
-      return;
+            return;
+
+        }
+
+
+        /*
+           Prevent double clicking while
+           the booking is being created.
+        */
+
+        bookDemoButton.disabled =
+            true;
+
+
+        const originalButtonHTML =
+            bookDemoButton.innerHTML;
+
+
+        bookDemoButton.textContent =
+            "Scheduling...";
+
+
+        try {
+
+            const bookingData =
+                getBookingData();
+
+
+            await submitBooking(
+                bookingData
+            );
+
+
+            fillConfirmation();
+
+
+            showStep(3);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Booking error:",
+                error
+            );
+
+
+            alert(
+                error.message ||
+                "We couldn't schedule your demo. Please try again."
+            );
+
+
+            /*
+               Refresh availability because
+               another person may have taken
+               the selected slot.
+            */
+
+            selectedTime =
+                null;
+
+
+            selectedAppointment.classList.remove(
+                "visible"
+            );
+
+
+            try {
+
+                const availableTimes =
+                    await getAvailableTimes(
+                        selectedDateString
+                    );
+
+
+                generateTimeOptions(
+                    availableTimes
+                );
+
+            }
+
+            catch (
+                availabilityError
+            ) {
+
+                console.error(
+                    "Could not refresh availability:",
+                    availabilityError
+                );
+
+            }
+
+        }
+
+        finally {
+
+            bookDemoButton.innerHTML =
+                originalButtonHTML;
+
+
+            /*
+               Only enable again if the user
+               still has a selected time.
+            */
+
+            bookDemoButton.disabled =
+                !selectedTime;
+
+        }
+
+    }
+);
+
+
+/* ---------------------------------------------------------
+   COLLECT BOOKING INFORMATION
+   --------------------------------------------------------- */
+
+function getBookingData() {
+
+    return {
+
+        name:
+            document.getElementById(
+                "name"
+            ).value.trim(),
+
+        business:
+            document.getElementById(
+                "business"
+            ).value.trim(),
+
+        email:
+            document.getElementById(
+                "email"
+            ).value.trim(),
+
+        phone:
+            document.getElementById(
+                "phone"
+            ).value.trim(),
+
+        businessType:
+            document.getElementById(
+                "business-type"
+            ).value,
+
+        website:
+            document.getElementById(
+                "website"
+            ).value.trim(),
+
+        date:
+            selectedDateString,
+
+        time:
+            selectedTime
+
+    };
+
+}
+
+
+/* ---------------------------------------------------------
+   SEND BOOKING TO TNAXIS BACKEND
+   --------------------------------------------------------- */
+
+async function submitBooking(
+    bookingData
+) {
+
+    const response =
+        await fetch(
+            `${API_URL}/api/book`,
+            {
+                method:
+                    "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(
+                        bookingData
+                    )
+            }
+        );
+
+
+    let data;
+
+
+    try {
+
+        data =
+            await response.json();
+
+    }
+
+    catch {
+
+        throw new Error(
+            "The booking server returned an invalid response."
+        );
 
     }
 
 
-    fillConfirmation();
+    if (
+        !response.ok ||
+        !data.success
+    ) {
 
-    showStep(3);
+        throw new Error(
+            data.message ||
+            "Could not schedule your demo."
+        );
 
-  }
-);
+    }
+
+
+    return data;
+
+}
 
 
 /* ---------------------------------------------------------
@@ -463,50 +963,71 @@ bookDemoButton.addEventListener(
 
 function fillConfirmation() {
 
-  const name =
-    document.getElementById("name").value;
-
-  const business =
-    document.getElementById("business").value;
-
-  const email =
-    document.getElementById("email").value;
+    const name =
+        document.getElementById(
+            "name"
+        ).value;
 
 
-  const formattedDate =
-    selectedDate.toLocaleDateString(
-      "en-US",
-      {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      }
-    );
+    const business =
+        document.getElementById(
+            "business"
+        ).value;
 
 
-  document.getElementById(
-    "confirmation-date"
-  ).textContent =
-    `${formattedDate} at ${selectedTime}`;
+    const email =
+        document.getElementById(
+            "email"
+        ).value;
 
 
-  document.getElementById(
-    "confirmation-name"
-  ).textContent =
-    name;
+    const formattedDate =
+        selectedDate.toLocaleDateString(
+            "en-US",
+            {
+                weekday:
+                    "long",
+
+                month:
+                    "long",
+
+                day:
+                    "numeric",
+
+                year:
+                    "numeric"
+            }
+        );
 
 
-  document.getElementById(
-    "confirmation-business"
-  ).textContent =
-    business;
+    const formattedTime =
+        formatTimeForDisplay(
+            selectedTime
+        );
 
 
-  document.getElementById(
-    "confirmation-email"
-  ).textContent =
-    email;
+    document.getElementById(
+        "confirmation-date"
+    ).textContent =
+        `${formattedDate} at ${formattedTime}`;
+
+
+    document.getElementById(
+        "confirmation-name"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "confirmation-business"
+    ).textContent =
+        business;
+
+
+    document.getElementById(
+        "confirmation-email"
+    ).textContent =
+        email;
 
 }
 
