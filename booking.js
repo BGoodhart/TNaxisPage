@@ -10,7 +10,7 @@
 
 // Local development backend.
 // We will change this when the backend is deployed.
-const API_URL = "http://localhost:3000";
+const API_URL = "https://tnaxisai.com";
 
 
 /* ---------------------------------------------------------
