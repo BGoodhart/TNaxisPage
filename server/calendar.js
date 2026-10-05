@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { google } from "googleapis";
-
+import { DateTime } from "luxon";
 
 const SCOPES = [
     "https://www.googleapis.com/auth/calendar.events",
@@ -133,14 +133,22 @@ function getCalendar() {
 
 function createAppointmentDate(date, time) {
 
-    // Server is currently being developed in Eastern Time.
-    // September is EDT (-04:00).
+    const appointment =
+        DateTime.fromISO(
+            `${date}T${time}`,
+            {
+                zone: TIME_ZONE
+            }
+        );
 
-    return new Date(
-        `${date}T${time}:00-04:00`
-    );
+    if (!appointment.isValid) {
+        throw new Error(
+            "Invalid appointment date or time."
+        );
+    }
+
+    return appointment.toJSDate();
 }
-
 
 /* =========================================================
    CHECK AVAILABLE APPOINTMENTS
@@ -151,16 +159,25 @@ export async function getAvailableTimes(date) {
     const calendar =
         getCalendar();
 
-    const dayStart =
-        new Date(
-            `${date}T00:00:00-04:00`
+    const day =
+        DateTime.fromISO(
+            date,
+            {
+                zone: TIME_ZONE
+            }
         );
+
+    if (!day.isValid) {
+        throw new Error(
+            "Invalid booking date."
+        );
+    }
+
+    const dayStart =
+        day.startOf("day");
 
     const dayEnd =
-        new Date(
-            `${date}T23:59:59-04:00`
-        );
-
+        day.endOf("day");
 
     // Ask Google which portions of the day are busy
     const response =
@@ -169,10 +186,10 @@ export async function getAvailableTimes(date) {
             requestBody: {
 
                 timeMin:
-                    dayStart.toISOString(),
+                    dayStart.toISO(),
 
                 timeMax:
-                    dayEnd.toISOString(),
+                    dayEnd.toISO(),
 
                 timeZone:
                     TIME_ZONE,
@@ -331,7 +348,7 @@ export async function createCalendarEvent({
         start: {
 
             dateTime:
-                start.toISOString(),
+                start.toISO(),
 
             timeZone:
                 TIME_ZONE
@@ -341,7 +358,7 @@ export async function createCalendarEvent({
         end: {
 
             dateTime:
-                end.toISOString(),
+                end.toISO(),
 
             timeZone:
                 TIME_ZONE
