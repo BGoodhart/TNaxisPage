@@ -19,6 +19,8 @@ const APPOINTMENT_SLOTS = [
 ];
 
 const APPOINTMENT_LENGTH_MINUTES = 20;
+const MAX_BOOKING_DAYS_AHEAD = 30;
+const bookingLocks = new Map();
 
 
 /* =========================================================
@@ -45,11 +47,7 @@ function createAuthenticatedOAuthClient() {
     const oauth2Client =
         createOAuthClient();
 
-    console.log(
-        "ENV refresh token exists:",
-        Boolean(process.env.GOOGLE_REFRESH_TOKEN)
-    );
-
+  
     if (!process.env.GOOGLE_REFRESH_TOKEN) {
         throw new Error(
             "GOOGLE_REFRESH_TOKEN is missing."
@@ -61,13 +59,6 @@ function createAuthenticatedOAuthClient() {
             process.env.GOOGLE_REFRESH_TOKEN
     });
 
-    console.log(
-        "OAuth client refresh token exists:",
-        Boolean(
-            oauth2Client.credentials.refresh_token
-        )
-    );
-
     return oauth2Client;
 }
 
@@ -76,13 +67,14 @@ function createAuthenticatedOAuthClient() {
    CREATE GOOGLE AUTH URL
    ========================================================= */
 
-export function getGoogleAuthURL() {
+export function getGoogleAuthURL(state) {
 
     const oauth2Client =
         createOAuthClient();
 
     return oauth2Client.generateAuthUrl({
 
+        state,
         access_type: "offline",
 
         prompt: "consent",
@@ -106,6 +98,9 @@ export async function handleGoogleCallback(code) {
     const { tokens } =
         await oauth2Client.getToken(code);
 
+    if (!tokens.refresh_token) throw new Error('Google did not return offline access. Please reconnect.');
+    oauth2Client.setCredentials({ refresh_token: tokens.refresh_token });
+    await oauth2Client.refreshAccessToken();
     return tokens;
 
 }
@@ -172,6 +167,9 @@ export async function getAvailableTimes(date) {
             "Invalid booking date."
         );
     }
+
+    const today = DateTime.now().setZone(TIME_ZONE).startOf("day");
+    if (day.weekday > 5 || day < today || day > today.plus({ days: MAX_BOOKING_DAYS_AHEAD })) return [];
 
     const dayStart =
         day.startOf("day");
@@ -253,7 +251,7 @@ export async function getAvailableTimes(date) {
                 });
 
 
-            return !hasConflict;
+            return !hasConflict && appointmentStart > new Date();
 
         });
 
@@ -279,24 +277,138 @@ export async function isTimeAvailable(
 
 
 /* =========================================================
+   VALIDATE BOOKING REQUEST
+   ========================================================= */
+
+function validateBooking({
+    name,
+    business,
+    email,
+    date,
+    time
+}) {
+
+    // Required fields
+    if (
+        !name ||
+        !business ||
+        !email ||
+        !date ||
+        !time
+    ) {
+        throw new Error(
+            "Missing required booking information."
+        );
+    }
+
+
+    // Basic email validation
+    const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        throw new Error(
+            "Please provide a valid email address."
+        );
+    }
+
+
+    // Only allow configured appointment times
+    if (!APPOINTMENT_SLOTS.includes(time)) {
+        throw new Error(
+            "Invalid appointment time."
+        );
+    }
+
+
+    // Parse date in TNaxis timezone
+    const bookingDate =
+        DateTime.fromISO(
+            date,
+            {
+                zone: TIME_ZONE
+            }
+        );
+
+
+    if (
+        !bookingDate.isValid ||
+        bookingDate.toISODate() !== date
+    ) {
+        throw new Error(
+            "Invalid appointment date."
+        );
+    }
+
+
+    // Start of today in Eastern Time
+    const today =
+        DateTime.now()
+            .setZone(TIME_ZONE)
+            .startOf("day");
+
+
+    const requestedDay =
+        bookingDate.startOf("day");
+
+
+    // No past dates
+    if (requestedDay < today) {
+        throw new Error(
+            "Appointments cannot be booked in the past."
+        );
+    }
+
+
+    // No weekends
+    if (bookingDate.weekday > 5) {
+        throw new Error(
+            "Appointments are only available Monday through Friday."
+        );
+    }
+
+
+    // Limit how far ahead someone can book
+    const latestDate =
+        today.plus({
+            days: MAX_BOOKING_DAYS_AHEAD
+        });
+
+
+    if (requestedDay > latestDate) {
+        throw new Error(
+            `Appointments can only be booked up to ${MAX_BOOKING_DAYS_AHEAD} days in advance.`
+        );
+    }
+
+}
+
+/* =========================================================
    CREATE CALENDAR EVENT
    ========================================================= */
 
 export async function createCalendarEvent({
-    name = "Test Customer",
-    business = "Test Business",
+    name = "",
+    business = "",
     email = "",
     phone = "",
     businessType = "",
     website = "",
-    date = "2026-09-29",
-    time = "14:00"
+    date = "",
+    time = ""
 } = {}) {
+
+    validateBooking({
+        name,
+        business,
+        email,
+        date,
+        time
+    });
+
 
     const calendar =
         getCalendar();
-
-
     // Check availability AGAIN immediately before booking
     const available =
         await isTimeAvailable(
@@ -348,7 +460,7 @@ export async function createCalendarEvent({
         start: {
 
             dateTime:
-                start.toISO(),
+                start.toISOString(),
 
             timeZone:
                 TIME_ZONE
@@ -358,7 +470,7 @@ export async function createCalendarEvent({
         end: {
 
             dateTime:
-                end.toISO(),
+                end.toISOString(),
 
             timeZone:
                 TIME_ZONE

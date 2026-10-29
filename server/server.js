@@ -11,6 +11,11 @@ import "dotenv/config";
 
 import express from "express";
 import cors from "cors";
+import path from "node:path";
+import { randomBytes, timingSafeEqual } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { rateLimit } from "express-rate-limit";
 
 import {
     getGoogleAuthURL,
@@ -25,8 +30,22 @@ import {
    ========================================================= */
 
 const app = express();
+let authAttempt = null;
+const siteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+app.disable("x-powered-by");
+if (process.env.TRUST_PROXY) app.set("trust proxy", Number(process.env.TRUST_PROXY));
+
+// Serve only public website files. Never expose server code or credentials.
+app.use((req, res, next) => {
+    const publicPath = req.path === "/" ? "/index.html" : req.path;
+    if (req.method !== "GET" && req.method !== "HEAD") return next();
+    if (!/^\/(?:[a-zA-Z0-9_-]+\.(?:html|css|js)|assets\/[a-zA-Z0-9_./-]+)$/.test(publicPath) || publicPath.includes("..")) return next();
+    res.sendFile(path.join(siteRoot, publicPath), { dotfiles: "deny" }, error => { if (error) next(); });
+});
+app.get("/health", (req, res) => res.json({ success: true }));
 
 const PORT = process.env.PORT || 3000;
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
 console.log("ENV CHECK:");
 console.log(
     "Client ID:",
@@ -50,15 +69,59 @@ console.log(
    MIDDLEWARE
    ========================================================= */
 
-app.use(express.json());
-app.use(cors());
+app.use(express.json({ limit: "10kb" }));
 
+const allowedOrigins = [
+    "https://tnaxisai.com",
+    "https://www.tnaxisai.com"
+];
+
+if (process.env.NODE_ENV !== "production") {
+    allowedOrigins.push(
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    );
+}
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+}));
+/* =========================================================
+   BOOKING API RATE LIMITING
+   ========================================================= */
+
+const bookingLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        success: false,
+        message: "Too many booking attempts. Please try again in 15 minutes."
+    }
+});
+
+const availabilityLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    limit: 30,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        success: false,
+        message: "Too many availability requests. Please try again shortly."
+    }
+});
 
 /* =========================================================
    TEST ROUTE
    ========================================================= */
 
 app.get("/", (req, res) => {
+    if (IS_PRODUCTION) {
+        return res.sendStatus(404);
+    }
 
     res.json({
         message: "TNaxis backend is running."
@@ -73,7 +136,11 @@ app.get("/", (req, res) => {
 
 app.get("/auth/google", (req, res) => {
 
-    const authURL = getGoogleAuthURL();
+    if (IS_PRODUCTION) return res.sendStatus(404);
+    const state = randomBytes(32).toString("hex");
+    authAttempt = { state, expires: Date.now() + 10 * 60 * 1000 };
+    res.cookie("tnaxis_calendar_state", state, { httpOnly: true, sameSite: "lax", maxAge: 600000, path: "/auth/google" });
+    const authURL = getGoogleAuthURL(state);
 
     res.redirect(authURL);
 
@@ -87,9 +154,19 @@ app.get("/auth/google", (req, res) => {
 app.get(
     "/auth/google/callback",
     async (req, res) => {
+        if (IS_PRODUCTION) {
+            return res.sendStatus(404);
+        }
 
         try {
 
+            const state = req.query.state;
+            const cookie = req.headers.cookie?.split("; ").find(value => value.startsWith("tnaxis_calendar_state="))?.split("=")[1];
+            if (!authAttempt || Date.now() > authAttempt.expires || typeof state !== "string" || state !== cookie || state.length !== authAttempt.state.length || !timingSafeEqual(Buffer.from(state), Buffer.from(authAttempt.state))) {
+                return res.status(400).send("Please restart calendar connection at /auth/google.");
+            }
+            authAttempt = null;
+            res.clearCookie("tnaxis_calendar_state", { path: "/auth/google" });
             const code = req.query.code;
 
             if (!code) {
@@ -105,6 +182,16 @@ app.get(
 
             const tokens =
                 await handleGoogleCallback(code);
+
+            if (!tokens.refresh_token) throw new Error("No refresh token received.");
+            const envPath = path.join(path.dirname(fileURLToPath(import.meta.url)), ".env");
+            const envText = await readFile(envPath, "utf8");
+            const tokenLine = `GOOGLE_REFRESH_TOKEN=${JSON.stringify(tokens.refresh_token)}`;
+            const updatedEnv = /^\s*GOOGLE_REFRESH_TOKEN\s*=.*$/m.test(envText)
+                ? envText.replace(/^\s*GOOGLE_REFRESH_TOKEN\s*=.*$/m, () => tokenLine)
+                : `${envText}\n${tokenLine}\n`;
+            await writeFile(envPath, updatedEnv, { mode: 0o600 });
+            process.env.GOOGLE_REFRESH_TOKEN = tokens.refresh_token;
 
 
             console.log(
@@ -188,7 +275,9 @@ app.get(
 app.get(
     "/test-calendar",
     async (req, res) => {
-
+        if (IS_PRODUCTION) {
+            return res.sendStatus(404);
+        }
         try {
 
             const event =
@@ -246,6 +335,7 @@ app.get(
 
 app.get(
     "/api/availability",
+    availabilityLimiter,
     async (req, res) => {
 
         try {
@@ -317,6 +407,7 @@ app.get(
 
 app.post(
     "/api/book",
+    bookingLimiter,
     async (req, res) => {
 
         try {
@@ -401,11 +492,6 @@ app.post(
         }
 
         catch (error) {
-
-            console.error(
-                "Booking error:",
-                error
-            );
 
 
             /* ---------------------------------------------
