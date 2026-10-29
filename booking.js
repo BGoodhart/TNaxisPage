@@ -8,9 +8,8 @@
    API CONFIGURATION
    --------------------------------------------------------- */
 
-// Local development backend.
-// We will change this when the backend is deployed.
-const API_URL = "http://localhost:3000";
+// Public booking API; local development uses the local server.
+const API_URL = window.TNAXIS_API_URL || (["localhost", "127.0.0.1"].includes(window.location.hostname) ? window.location.origin : "https://tnaxispage.onrender.com");
 
 
 /* ---------------------------------------------------------
