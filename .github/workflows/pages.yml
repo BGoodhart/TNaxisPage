@@ -24,6 +24,8 @@ jobs:
           mkdir -p _site
           cp -- *.html *.css *.js CNAME _site/
           cp -R assets _site/assets
+          mkdir -p _site/tribute
+          cp -- tribute/index.html tribute/tribute.css _site/tribute/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
