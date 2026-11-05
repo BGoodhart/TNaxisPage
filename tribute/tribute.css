@@ -17,7 +17,8 @@ body:has(.tribute-content) {
   color: var(--ink);
   font-size: 1rem;
   line-height: 1.65;
-  width: min(70rem, calc(100% - 2.5rem));
+  width: min(70rem, 100%);
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
   margin-inline: auto;
 }
 
@@ -45,7 +46,7 @@ body:has(.tribute-content) {
 
 .tribute-content h1 {
   margin: .2em 0;
-  font-size: clamp(3rem, 8vw, 6.7rem);
+  font-size: clamp(2.65rem, 6.2vw, 5.4rem);
   line-height: .99;
   letter-spacing: -.055em;
 }
@@ -67,7 +68,7 @@ body:has(.tribute-content) {
   position: relative;
   display: grid;
   width: 100%;
-  max-width: 22rem;
+  max-width: 19rem;
   aspect-ratio: 4 / 5;
   place-items: center;
   justify-self: end;
