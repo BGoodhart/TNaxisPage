@@ -5,16 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A tribute to Clarence H. King, my great-grandfather and the inspiration behind TNaxis.">
   <title>Tribute to Clarence H. King | TNaxis</title>
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/logo_black_background.png"
+    >
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="tribute.css">
 </head>
 <body>
-  <header class="masthead wrap">
-    <a class="brand" href="https://tnaxisai.com/">TNaxis</a>
-    <span class="label">A family tribute</span>
-  </header>
+    <nav class="navbar">
 
-  <main class="wrap">
-    <section class="hero" aria-labelledby="name">
+        <a href="/" class="nav-brand">
+            <img
+                src="/assets/logo_with_name.png"
+                alt="TNaxis"
+                class="nav-logo"
+            >
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="/#how">
+                How It Works
+            </a>
+
+            <a href="/#demo">
+                Demo
+            </a>
+
+            <a href="/#features">
+                Features
+            </a>
+
+        </div>
+
+
+        <a
+            href="/book-demo.html"
+            class="nav-button"
+        >
+            Book a Demo
+        </a>
+
+    </nav>
+
+  <main class="tribute-content">
+    <section class="tribute-hero" aria-labelledby="name">
       <div>
         <p class="label">For my great-grandfather</p>
         <h1 id="name">Clarence H. King</h1>
@@ -42,8 +92,7 @@
     </div>
   </main>
 
-  <footer class="wrap page-footer">
-    <a href="https://tnaxisai.com/">Back to TNaxis</a>
-  </footer>
+  <div id="footer-placeholder"></div>
+  <script src="/script.js"></script>
 </body>
 </html>
