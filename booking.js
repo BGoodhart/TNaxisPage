@@ -365,10 +365,14 @@ function formatDateForAPI(date) {
    SELECT DATE
    --------------------------------------------------------- */
 
+let availabilityRequestId = 0;
+
 async function selectDate(
     date,
     button
 ) {
+
+    const requestId = ++availabilityRequestId;
 
     selectedDate =
         date;
@@ -456,6 +460,7 @@ async function selectDate(
             );
 
 
+        if (requestId !== availabilityRequestId) return;
         generateTimeOptions(
             availableTimes
         );
@@ -463,6 +468,7 @@ async function selectDate(
     }
 
     catch (error) {
+        if (requestId !== availabilityRequestId) return;
 
         console.error(
             "Availability error:",
@@ -473,7 +479,7 @@ async function selectDate(
         timeOptions.innerHTML = `
             <p class="schedule-placeholder">
                 We couldn't load available times.
-                Please try again.
+                Please try another date or <a href="mailto:hello@tnaxisai.com">email TNaxis to request a time</a>.
             </p>
         `;
 

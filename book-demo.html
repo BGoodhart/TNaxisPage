@@ -63,15 +63,15 @@
 
         <div class="nav-links">
 
-            <a href="#how">
+            <a href="/#how">
                 How It Works
             </a>
 
-            <a href="#demo">
+            <a href="/#demo">
                 Demo
             </a>
 
-            <a href="#features">
+            <a href="/#features">
                 Features
             </a>
 
@@ -238,6 +238,7 @@
 
 
                 <form id="business-form">
+                    <p class="sample-label">Use business contact details only. Do not enter sensitive customer information. This form requests a demo; it does not start a paid service.</p>
 
 
                     <!-- NAME + BUSINESS -->
@@ -412,7 +413,7 @@
 
                         <input
                             type="text"
-                            id="website"
+                            id="website" autocomplete="url"
                             name="website"
                             placeholder="yourbusiness.com"
                         >
@@ -506,6 +507,7 @@
 
                     <div class="time-selection">
 
+                        <p class="sample-label">All demo times use Eastern Time (America/New_York).</p>
                         <h3 id="time-heading">
                             Select a day first
                         </h3>
@@ -513,7 +515,7 @@
 
                         <div
                             class="time-options"
-                            id="time-options"
+                            id="time-options" role="status" aria-live="polite"
                         >
 
                             <p class="schedule-placeholder">
@@ -693,6 +695,7 @@
         </section>
 
 
+    <noscript><p class="footer-fallback">Demo scheduling requires JavaScript. <a href="mailto:hello@tnaxisai.com">Email TNaxis to request a time</a>.</p></noscript>
     </main>
 
 
@@ -702,7 +705,7 @@
          Loaded automatically from footer.html
          ===================================================== -->
 
-    <div id="footer-placeholder"></div>
+    <div id="footer-placeholder"><p class="footer-fallback">Need help? <a href="mailto:hello@tnaxisai.com">Email TNaxis</a>.</p></div>
 
 
 

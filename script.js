@@ -121,7 +121,7 @@ pageLinks.forEach(link => {
              * Ignore links opening in another tab.
              */
 
-            if (link.target === "_blank") {
+            if (event.button !== 0 || link.target === "_blank" || link.hasAttribute("download")) {
                 return;
             }
 
